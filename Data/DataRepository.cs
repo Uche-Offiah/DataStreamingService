@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DataStreamingService.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,9 @@ namespace DataStreamingService.Data
             _context = context;
         }
 
-        public async Task<List<Data>> GetDataAsync()
+        public async Task<List<StreamData>> GetDataAsync()
         {
-            return await _context.Data.ToListAsync();
+            return await _context.StreamData.ToListAsync();
         }
     }
 }
