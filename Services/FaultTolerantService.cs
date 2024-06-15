@@ -17,7 +17,7 @@ namespace DataStreamingService.Services
             _dataService = dataService;
         }
 
-        public async Task<List<StreamData>> GetDataWithFaultToleranceAsync()
+        public async Task<List<ProcessedData>> GetDataWithFaultToleranceAsync()
         {
             var retryPolicy = Policy.Handle<Exception>()
                 .RetryAsync(3);
