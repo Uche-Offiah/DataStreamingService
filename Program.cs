@@ -1,10 +1,13 @@
 using DataStreamingService;
 using DataStreamingService.Data;
 using DataStreamingService.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-var builder = Host.CreateApplicationBuilder(args);
+//var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddDbContext<DataContext>(options =>
@@ -13,12 +16,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<DataRepository>();
 builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<WebSocketHandler>();
-builder.Services.AddSingleton<FaultTolerantService>();
+builder.Services.AddScoped<FaultTolerantService>();
 builder.Services.AddSingleton<LoggingService>();
 
 builder.Services.AddHostedService<Worker>();
 
-builder.Services.UseSerilog((context, configuration) =>
+builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
 
