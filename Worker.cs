@@ -1,4 +1,5 @@
 using DataStreamingService.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.WebSockets;
@@ -10,12 +11,14 @@ namespace DataStreamingService
         private readonly ILogger<Worker> _logger;
         private readonly WebSocketHandler _webSocketHandler;
         private readonly IConfiguration _configuration;
+        private readonly HttpContext _httpContext;
 
-        public Worker(ILogger<Worker> logger, WebSocketHandler webSocketHandler, IConfiguration configuration)
+        public Worker(ILogger<Worker> logger, WebSocketHandler webSocketHandler, IConfiguration configuration, HttpContext httpContext)
         {
             _logger = logger;
             _webSocketHandler = webSocketHandler;
             _configuration = configuration;
+            _httpContext = httpContext;
         }
 
         //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,7 +48,7 @@ namespace DataStreamingService
                 var context = await listener.GetContextAsync();
                 if (context.Request.IsWebSocketRequest)
                 {
-                    await _webSocketHandler.HandleWebSocketAsync(context);
+                    await _webSocketHandler.HandleWebSocketAsync(_httpContext);
                 }
                 else
                 {
@@ -59,4 +62,4 @@ namespace DataStreamingService
     }
 
 }
-}
+

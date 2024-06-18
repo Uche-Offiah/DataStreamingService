@@ -2,6 +2,7 @@ using DataStreamingService;
 using DataStreamingService.Data;
 using DataStreamingService.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<WebSocketHandler>();
 builder.Services.AddScoped<FaultTolerantService>();
 builder.Services.AddSingleton<LoggingService>();
+builder.Services.AddSingleton<HttpContext>();
 
 builder.Services.AddHostedService<Worker>();
 
