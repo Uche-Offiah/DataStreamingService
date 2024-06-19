@@ -9,16 +9,12 @@ namespace DataStreamingService
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly WebSocketHandler _webSocketHandler;
         private readonly IConfiguration _configuration;
-        private readonly HttpContext _httpContext;
 
-        public Worker(ILogger<Worker> logger, WebSocketHandler webSocketHandler, IConfiguration configuration, HttpContext httpContext)
+        public Worker(ILogger<Worker> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _webSocketHandler = webSocketHandler;
             _configuration = configuration;
-            _httpContext = httpContext;
         }
 
         //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,7 +33,7 @@ namespace DataStreamingService
         {
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-            string url = _configuration.GetValue<string>("WebSocketServer:Url") ?? "http://localhost:5000/ws/";
+            string url = _configuration.GetValue<string>("WebSocketServer:Url") ?? "http://localhost:5200/ws/";
 
             var listener = new HttpListener();
             listener.Prefixes.Add(url);
@@ -48,7 +44,7 @@ namespace DataStreamingService
                 var context = await listener.GetContextAsync();
                 if (context.Request.IsWebSocketRequest)
                 {
-                    await _webSocketHandler.HandleWebSocketAsync(_httpContext);
+                    //await _webSocketHandler.HandleWebSocketAsync(context);
                 }
                 else
                 {

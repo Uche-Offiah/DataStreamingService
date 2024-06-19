@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
@@ -19,11 +20,11 @@ namespace DataStreamingService.Services
             _dataService = dataService;
         }
 
-        public async Task HandleWebSocketAsync(HttpContext context)
+        public async Task HandleWebSocketAsync(HttpListenerContext context)
         {
-            if (context.WebSockets.IsWebSocketRequest)
+            if (context.Request.IsWebSocketRequest)
             {
-                using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                using (WebSocket webSocket = (await context.AcceptWebSocketAsync(null)).WebSocket)
                 {
                     await SendDataAsync(webSocket);
                 }

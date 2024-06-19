@@ -10,7 +10,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddHostedService<Worker>();
+//builder.Services.AddHostedService<Worker>();
 builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -19,7 +19,6 @@ builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<WebSocketHandler>();
 builder.Services.AddScoped<FaultTolerantService>();
 builder.Services.AddSingleton<LoggingService>();
-builder.Services.AddSingleton<HttpContext>();
 
 builder.Services.AddHostedService<Worker>();
 
